@@ -298,7 +298,7 @@ installDemoControl () {
 		
 		tee control-config <<-'EOF'
 			"properties" : {
-"democontrol.download_url" : "https://github.com/ryancicak/northcentral_hackathon/Data-Loader.zip",
+"democontrol.download_url" : "https://github.com/ryancicak/northcentral_hackathon/raw/master/Data-Loader.zip",
 "democontrol.install_dir" : "/root"
 			}
 		EOF

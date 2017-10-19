@@ -11,7 +11,7 @@
 
   <property require-input="true">
     <name>democontrol.download.url</name>
-    <value>https://github.com/ryancicak/northcentral_hackathon/Data-Loader.zip</value>
+    <value>https://github.com/ryancicak/northcentral_hackathon/raw/master/Data-Loader.zip</value>
     <description>Online location to download Simulator package</description>
   </property>   
 </configuration>
