@@ -544,7 +544,7 @@ echo $PAYLOAD
 
 
 createKafkaTopics () {
-	/usr/hdp/current/kafka-broker/bin/kafka-topics.sh --zookeeper $ZK_HOST:2181 --create --topic device_event_avro --partitions 1 --replication-factor 1
+	/usr/hdp/current/kafka-broker/bin/kafka-topics.sh --zookeeper $ZK_HOST:2181 --create --topic afeventavro --partitions 1 --replication-factor 1
 
 }
 
@@ -589,7 +589,7 @@ createStormView
 echo "********************************* Registering Schemas"
 pushSchemasToRegistry	
 echo "********************************* Deploying Nifi Template"
-deployTemplateToNifi $ROOT_PATH/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/nifi/alarmfatigue-demo.xml AlarmFatigue-Demo
+deployTemplateToNifi $ROOT_PATH/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/nifi/alarm_fatigue.xml AlarmFatigue-Demo
 echo "********************************* Configuring Nifi Template"
 configureNifiTempate
 echo "********************************* Creating SAM Service Pool"
@@ -597,6 +597,6 @@ createSAMCluster
 echo "********************************* Initializing SAM Namespace"
 initializeSAMNamespace
 echo "********************************* Import SAM Template"
-TOPOLOGY_ID=$(importSAMTopology $ROOT_PATH/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/sam/alarmfatigue-demo.json AlarmFatigue-Demo)
+#TOPOLOGY_ID=$(importSAMTopology $ROOT_PATH/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/sam/alarmfatigue-demo.json AlarmFatigue-Demo)
 echo "********************************* Deploy SAM Topology"
-deploySAMTopology "$TOPOLOGY_ID"	
+#deploySAMTopology "$TOPOLOGY_ID"	
