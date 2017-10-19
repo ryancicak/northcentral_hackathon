@@ -379,7 +379,8 @@ configureNifiTempate () {
        	#CURRENT_GROUP=${GROUP_TARGETS[i]}
        	CURRENT_GROUP=$GROUP
        	echo "***********************************************************calling handle ports with group $CURRENT_GROUP"
-       	handleGroupPorts $CURRENT_GROUP
+       	handleInputGroupPorts $CURRENT_GROUP
+       	handleOutputGroupPorts $CURRENT_GROUP
        	echo "***********************************************************calling handle processors with group $CURRENT_GROUP"
        	handleGroupProcessors $CURRENT_GROUP
        	echo "***********************************************************done handle processors"
@@ -472,7 +473,33 @@ handleGroupProcessors (){
        	done
 }
 
-handleGroupPorts (){
+handleInputGroupPorts (){
+       	TARGET_GROUP=$1
+
+       	TARGETS=($(curl -u admin:admin -i -X GET $TARGET_GROUP/input-ports | grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)'))
+       	length=${#TARGETS[@]}
+       	echo $length
+       	echo ${TARGETS[0]}
+
+       	for ((i = 0; i < $length; i++))
+       	do
+       		ID=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"id":"([a-zA-z0-9\-]+)'|grep -Po ':"([a-zA-z0-9\-]+)'|grep -Po '([a-zA-z0-9\-]+)'|head -1)
+       		REVISION=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '\"version\":([0-9]+)'|grep -Po '([0-9]+)')
+       		TYPE=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"type":"([a-zA-Z0-9\-.]+)' |grep -Po ':"([a-zA-Z0-9\-.]+)' |grep -Po '([a-zA-Z0-9\-.]+)' |head -1)
+       		echo "Current Processor Path: ${TARGETS[i]}"
+       		echo "Current Processor Revision: $REVISION"
+       		echo "Current Processor ID: $ID"
+
+       		echo "***************************Activating Port ${TARGETS[i]}..."
+
+       		PAYLOAD=$(echo "{\"id\":\"$ID\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$ID\",\"state\": \"RUNNING\"}}")
+
+       		echo "PAYLOAD"
+       		curl -u admin:admin -i -H "Content-Type:application/json" -d "${PAYLOAD}" -X PUT ${TARGETS[i]}
+       	done
+}
+
+handleOutputGroupPorts (){
        	TARGET_GROUP=$1
 
        	TARGETS=($(curl -u admin:admin -i -X GET $TARGET_GROUP/output-ports | grep -Po '\"uri\":\"([a-z0-9-://.]+)' | grep -Po '(?!.*\")([a-z0-9-://.]+)'))
