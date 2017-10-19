@@ -1256,7 +1256,7 @@ to the demo environment.</label>
               </entry>
               <entry>
                 <key>schema.name</key>
-                <value>raw-afeventavro</value>
+                <value>afeventavro</value>
               </entry>
             </properties>
             <runDurationMillis>0</runDurationMillis>
