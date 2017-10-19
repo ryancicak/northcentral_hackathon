@@ -589,7 +589,7 @@ createStormView
 echo "********************************* Registering Schemas"
 pushSchemasToRegistry	
 echo "********************************* Deploying Nifi Template"
-deployTemplateToNifi $ROOT_PATH/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/nifi/alarm_fatigue.xml AlarmFatigue-Demo
+deployTemplateToNifi $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/nifi/alarm_fatigue.xml AlarmFatigue-Demo
 echo "********************************* Configuring Nifi Template"
 configureNifiTempate
 echo "********************************* Creating SAM Service Pool"
