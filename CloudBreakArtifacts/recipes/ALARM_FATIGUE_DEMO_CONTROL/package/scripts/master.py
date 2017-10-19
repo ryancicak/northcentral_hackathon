@@ -21,7 +21,7 @@ class DemoControl(Script):
     self.configure(env)
     import params
     Execute('echo Start Simulation')
-    Execute('nohup java -cp '+params.install_dir+'/Data-Loader/devicegenerator-1.0-SNAPSHOT.jar:/usr/hdp/current/hive-server2/jdbc/*:dependency-jars/* com.hortonworks.hackathon.northcentral.Main & 2>&1 & ')
+    Execute('nohup java -cp '+params.install_dir+'/Data-Loader/devicegenerator-1.0-SNAPSHOT.jar:/usr/hdp/current/hive-server2/jdbc/*:/root/Data-Loader/dependency-jars/* com.hortonworks.hackathon.northcentral.Main & 2>&1 & ')
     Execute('ps -ef|grep "Data-Loader/devicegenerator-1.0-SNAPSHOT.jar"| grep -v grep| awk \'{print $2}\' > /var/run/VitalSim.pid')
     
   def stop(self, env):
