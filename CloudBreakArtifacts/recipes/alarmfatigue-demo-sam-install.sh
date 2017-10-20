@@ -567,8 +567,8 @@ importSAMTopology () {
 	#Import Topology
 	sed -r -i 's;\{\{HOST1\}\};'$AMBARI_HOST';g' $SAM_DIR
 	sed -r -i 's;\{\{CLUSTERNAME\}\};'$CLUSTER_NAME';g' $SAM_DIR
- 
-	export TOPOLOGY_ID=$(curl -F file=@$SAM_DIR -F 'topologyName='$TOPOLOGY_NAME -F 'namespaceId='$NAMESPACE_ID -X POST http://$AMBARI_HOST:7777/api/v1/catalog/topologies/actions/import| grep -Po '\"id\":([0-9]+)'|grep -Po '([0-9]+)')
+
+export TOPOLOGY_ID=$(curl -F file=@$SAM_DIR -F 'topologyName='$TOPOLOGY_NAME -F 'namespaceId='$NAMESPACE_ID -X POST http://$AMBARI_HOST:7777/api/v1/catalog/topologies/actions/import| grep -Po '\"id\":([0-9]+)'|grep -Po '([0-9]+)')
 
     echo $TOPOLOGY_ID
 }
@@ -667,6 +667,6 @@ createSAMCluster
 echo "********************************* Initializing SAM Namespace"
 initializeSAMNamespace
 echo "********************************* Import SAM Template"
-TOPOLOGY_ID=$(importSAMTopology $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/sam/cicaktest.json CicakTest-Demo)
+TOPOLOGY_ID=$(importSAMTopology $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/sam/cicaktest.json cicaktest)
 echo "********************************* Deploy SAM Topology"
-deploySAMTopology "$TOPOLOGY_ID"	
+de#ploySAMTopology "$TOPOLOGY_ID"	
