@@ -669,4 +669,4 @@ initializeSAMNamespace
 echo "********************************* Import SAM Template"
 TOPOLOGY_ID=$(importSAMTopology $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/sam/cicaktest.json cicaktest)
 echo "********************************* Deploy SAM Topology"
-de#ploySAMTopology "$TOPOLOGY_ID"	
+deploySAMTopology "$TOPOLOGY_ID"	
