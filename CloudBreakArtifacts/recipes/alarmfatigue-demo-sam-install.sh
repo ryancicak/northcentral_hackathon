@@ -411,6 +411,25 @@ handleGroupProcessors (){
        		echo "Current Processor ID: $ID"
        		echo "Current Processor TYPE: $TYPE"
 
+				if ! [ -z $(echo $TYPE|grep "PublishKafkaRecord") ]; then
+       				echo "***************************This is a (PublishKafkaRecord) Record Processor"
+
+       				RECORD_READER=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"record-reader":"[a-zA-Z0-9-]+'|grep -Po ':"[a-zA-Z0-9-]+'|grep -Po '[a-zA-Z0-9-]+'|head -1)
+                RECORD_WRITER=$(curl -u admin:admin -i -X GET ${TARGETS[i]} |grep -Po '"record-writer":"[a-zA-Z0-9-]+'|grep -Po ':"[a-zA-Z0-9-]+'|grep -Po '[a-zA-Z0-9-]+'|head -1)
+
+                echo "Record Reader: $RECORD_READER"
+                echo "Record Writer: $RECORD_WRITER"
+
+       				SCHEMA_REGISTRY=$(curl -u admin:admin -i -X GET http://$AMBARI_HOST:9090/nifi-api/controller-services/$RECORD_READER |grep -Po '"schema-registry":"[a-zA-Z0-9-]+'|grep -Po ':"[a-zA-Z0-9-]+'|grep -Po '[a-zA-Z0-9-]+'|head -1)
+
+       				echo "Schema Registry: $SCHEMA_REGISTRY"
+
+       				curl -u admin:admin -i -H "Content-Type:application/json" -X PUT -d "{\"id\":\"$SCHEMA_REGISTRY\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$SCHEMA_REGISTRY\",\"state\":\"ENABLED\",\"properties\":{\"url\":\"http:\/\/$AMBARI_HOST:7788\/api\/v1\"}}}" http://$AMBARI_HOST:9090/nifi-api/controller-services/$SCHEMA_REGISTRY
+
+       				curl -u admin:admin -i -H "Content-Type:application/json" -X PUT -d "{\"id\":\"$RECORD_READER\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$RECORD_READER\",\"state\":\"ENABLED\"}}" http://$AMBARI_HOST:9090/nifi-api/controller-services/$RECORD_READER
+
+       				curl -u admin:admin -i -H "Content-Type:application/json" -X PUT -d "{\"id\":\"$RECORD_WRITER\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$RECORD_WRITER\",\"state\":\"ENABLED\"}}" http://$AMBARI_HOST:9090/nifi-api/controller-services/$RECORD_WRITER
+       			fi
 				if ! [ -z $(echo $TYPE|grep "SelectHiveQL") ]; then
        				echo "***************************This is a SelectHiveQL Processor"
 
@@ -585,7 +604,7 @@ PAYLOAD="{\"name\":\"afeventavro\",\"type\":\"avro\",\"schemaGroup\":\"alarmfati
 
 	curl -u admin:admin -i -H "content-type: application/json" -d "$PAYLOAD" -X POST http://$AMBARI_HOST:7788/api/v1/schemaregistry/schemas
 	
-	PAYLOAD={\"schemaText\":\"{\\\"type\\\":\\\"record\\\",\\\"name\\\":\\\"afeventavro_v0\\\",\\\"fields\\\":[{\\\"name\\\":\\\"DeviceGUID\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"DeviceId\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"PatientId\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"PatientName\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"DiagnosisDescription\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"HealthProviderName\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"Location\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"DoctorEmail\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"SampleDuration\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"Respiration\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"PulseRate\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"BloodPressureSystolic\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"BloodPressureDiastolic\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"BodyTemperature\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"TransmissionTimestamp\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]}]}\",\"description\":\"afeventavro\"}
+	PAYLOAD={\"schemaText\":\"{\\\"type\\\":\\\"record\\\",\\\"namespace\\\":\\\"hortonworks.hdp.refapp.alarmfatigue\\\",\\\"name\\\":\\\"afeventavro\\\",\\\"fields\\\":[{\\\"name\\\":\\\"DeviceGUID\\\",\\\"type\\\":\\\"string\\\"},{\\\"name\\\":\\\"DeviceId\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"PatientId\\\",\\\"type\\\":[\\\"null\\\",\\\"int\\\"]},{\\\"name\\\":\\\"PatientName\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"DiagnosisDescription\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"HealthProviderName\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"Location\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"DoctorEmail\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]},{\\\"name\\\":\\\"SampleDuration\\\",\\\"type\\\":[\\\"null\\\",\\\"int\\\"]},{\\\"name\\\":\\\"Respiration\\\",\\\"type\\\":[\\\"null\\\",\\\"int\\\"]},{\\\"name\\\":\\\"PulseRate\\\",\\\"type\\\":[\\\"null\\\",\\\"int\\\"]},{\\\"name\\\":\\\"BloodPressureSystolic\\\",\\\"type\\\":[\\\"null\\\",\\\"int\\\"]},{\\\"name\\\":\\\"BloodPressureDiastolic\\\",\\\"type\\\":[\\\"null\\\",\\\"int\\\"]},{\\\"name\\\":\\\"BodyTemperature\\\",\\\"type\\\":[\\\"null\\\",\\\"float\\\"]},{\\\"name\\\":\\\"TransmissionTimestamp\\\",\\\"type\\\":[\\\"null\\\",\\\"string\\\"]}]}\",\"description\":\"afeventavro\"}
 	
 echo $PAYLOAD
 	

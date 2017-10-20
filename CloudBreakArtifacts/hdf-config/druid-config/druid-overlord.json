@@ -1,0 +1,6 @@
+"properties" : {
+"druid.indexer.runner.type" : "remote",
+"druid.indexer.storage.type" : "metadata",
+"druid.port" : "8090",
+"druid.service" : "druid/overlord"
+}

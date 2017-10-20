@@ -1,0 +1,5 @@
+"properties" : {
+"druid.coordinator.merge.on" : "false",
+"druid.port" : "8081",
+"druid.service" : "druid/coordinator"
+}
