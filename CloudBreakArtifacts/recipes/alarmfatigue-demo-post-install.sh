@@ -553,7 +553,7 @@ configureAmbariRepos (){
 	gpgcheck=0
 	EOF
 	
-	curl -u admin:admin -d @$ROOT_PATH/CloudBreakArtifacts/hdf-config/api-payload/repo_update.json -H "X-Requested-By: ambari" -X PUT http://$AMBARI_HOST:8080/api/v1/stacks/HDP/versions/2.6/repository_versions/1
+	curl -u admin:admin -d @$ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/hdf-config/api-payload/repo_update.json -H "X-Requested-By: ambari" -X PUT http://$AMBARI_HOST:8080/api/v1/stacks/HDP/versions/2.6/repository_versions/1
 }
 
 installMySQL (){
@@ -649,12 +649,12 @@ export VERSION=`hdp-select status hadoop-client | sed 's/hadoop-client - \([0-9]
 export INTVERSION=$(echo $VERSION*10 | bc | grep -Po '([0-9][0-9])')
 echo "*********************************HDP VERSION IS: $VERSION"
 
-sed -r -i 's;\{\{mysql_host\}\};'$AMBARI_HOST';' $ROOT_PATH/CloudBreakArtifacts/hdf-config/registry-config/registry-common.json
-sed -r -i 's;\{\{mysql_host\}\};'$AMBARI_HOST';' $ROOT_PATH/CloudBreakArtifacts/hdf-config/streamline-config/streamline-common.json
-sed -r -i 's;\{\{registry_host\}\};'$AMBARI_HOST';' $ROOT_PATH/CloudBreakArtifacts/hdf-config/streamline-config/streamline-common.json
-sed -r -i 's;\{\{superset_host\}\};'$AMBARI_HOST';' $ROOT_PATH/CloudBreakArtifacts/hdf-config/streamline-config/streamline-common.json
-sed -r -i 's;\{\{mysql_host\}\};'$AMBARI_HOST';' $ROOT_PATH/CloudBreakArtifacts/hdf-config/druid-config/druid-common.json
-sed -r -i 's;\{\{mysql_host\}\};'$AMBARI_HOST';' $ROOT_PATH/CloudBreakArtifacts/hdf-config/druid-config/druid-superset.json
+sed -r -i 's;\{\{mysql_host\}\};'$AMBARI_HOST';' $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/hdf-config/registry-config/registry-common.json
+sed -r -i 's;\{\{mysql_host\}\};'$AMBARI_HOST';' $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/hdf-config/streamline-config/streamline-common.json
+sed -r -i 's;\{\{registry_host\}\};'$AMBARI_HOST';' $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/hdf-config/streamline-config/streamline-common.json
+sed -r -i 's;\{\{superset_host\}\};'$AMBARI_HOST';' $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/hdf-config/streamline-config/streamline-common.json
+sed -r -i 's;\{\{mysql_host\}\};'$AMBARI_HOST';' $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/hdf-config/druid-config/druid-common.json
+sed -r -i 's;\{\{mysql_host\}\};'$AMBARI_HOST';' $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/hdf-config/druid-config/druid-superset.json
 
 echo "*********************************Stopping Prometheous..."
 kill -9 $(netstat -nlp|grep 9090|grep -Po '[0-9]+/[a-zA-Z]+'|grep -Po '[0-9]+')
