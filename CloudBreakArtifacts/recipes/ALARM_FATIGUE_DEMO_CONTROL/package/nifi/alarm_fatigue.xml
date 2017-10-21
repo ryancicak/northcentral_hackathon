@@ -2912,7 +2912,7 @@ Input Port to which Mahesh's processor will connect to</label>
             <properties>
               <entry>
                 <key>hive-stream-metastore-uri</key>
-                <value>thrift://mukijo-1272-2-1.field.hortonworks.com:9083</value>
+                <value>thrift://localhost:9083</value>
               </entry>
               <entry>
                 <key>hive-config-resources</key>
