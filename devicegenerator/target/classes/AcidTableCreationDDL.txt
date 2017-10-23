@@ -1,0 +1,282 @@
+create database if not exists AlarmFatigue;
+
+use AlarmFatigue;
+-------------------------------------------------------------
+-------------------------------------------------------------
+-------------------------------------------------------------
+-- INTERNAL TABLES
+--
+-- Processing & Device Reading-Specific Data
+-- These are Internal Tables, ORC format, with ACID enabled.
+-- -- Ensure ACID transactions are enabled for your cluster (Hive config).
+-------------------------------------------------------------
+-------------------------------------------------------------
+-------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+-- DeviceTransmission
+-- Streaming data target.  Define as ACID-Compliant Hive table.
+------------------------------------------------------------------------
+drop table if exists DeviceTransmission;
+
+CREATE TABLE DeviceTransmission (
+DeviceGUID string,
+SampleDuration int,
+Respiration int,
+PulseRate int,
+BloodPressureSystolic int,
+BloodPressureDiastolic int,
+BodyTemperature decimal(5,2),
+TransmissionTimestamp timestamp
+)
+CLUSTERED BY(DeviceGUID, TransmissionTimestamp)
+   INTO 2 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+;
+
+------------------------------------------------------------------------
+-- PatientDiagnosis
+-- Intersection Entity - CareProvider diagnoses a Patient.
+-------------------------------------------------------------------------
+drop table if exists PatientDiagnosis;
+
+CREATE TABLE patientdiagnosis (
+PatientID int,
+CareProviderID int,
+ICD10Code string
+)
+CLUSTERED BY(PatientID, CareProviderID, ICD10Code)
+   INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+insert into patientdiagnosis (patientid, careproviderid, icd10code)
+values
+(4, 2, '0021'),
+(3, 3, '0021'),
+(2, 4, '0021'),
+(1, 1, '0021');
+
+drop table if exists Device;
+
+CREATE TABLE Device (
+DeviceGUID string,
+DeviceID int,
+DeviceTypeID int,
+LocationID int,
+problemPercentage float,
+DateOfInitialService timestamp
+)
+CLUSTERED BY(DeviceGUID)
+   INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+insert into Device (deviceguid, deviceid, devicetypeid, locationid, problempercentage, dateofinitialservice)
+values
+('43aeda42-49a7-480a-9633-7154980980ac', 2, 1, 3, 0, '2014-03-01 00:00:00'),
+('ec93da97-08c6-43c4-a0a6-cb689723cf19', 3, 2, 6, 1.0, '2017-01-01 00:00:00'),
+('26a990ad-d2fc-4b77-9c94-48e2a34a9d9e', 4, 2, 8, 0, '2017-01-01 00:00:00'),
+('f7635af9-e74a-45e5-9ff0-6c8aa8599185', 1, 1, 1, 0, '2014-03-01 00:00:00')
+;
+
+
+
+------------------------------------------------------------------------------
+-- PatientDevice
+-- Intersection Entity - Patient is hooked up to a Device.
+-- Notice we use the internal DeviceID (integer) rather than the Device GUID
+------------------------------------------------------------------------------
+drop table if exists PatientDevice;
+
+CREATE TABLE PatientDevice (
+PatientID int,
+DeviceID int
+)
+CLUSTERED BY(PatientID, DeviceID) INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+
+insert into patientDevice (patientid, deviceid)
+values
+(1, 4),
+(2, 3),
+(3, 2),
+(4, 1);
+
+
+----------------------------------------------------------------------------------
+-- icd10codes - Standard medical Diagnostics Codes
+-- Note: Leading Zeros in the icd10code are significant.
+--       Therefore the PLK (icd10code) is stored as a string, not as an integer.
+----------------------------------------------------------------------------------
+drop table if exists icd10codes;
+
+CREATE TABLE icd10codes (
+ICD10Code string,
+Description string,
+ShortDescription string
+)
+CLUSTERED BY(ICD10Code) INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+insert into icd10codes (icd10code, description, shortdescription)
+values
+('0010', 'Cholera due to vibrio cholerae','Cholera d/t vib cholerae'),
+('0011', 'Cholera due to vibrio cholerae el tor', 'Cholera d/t vib el tor'),
+('0019', 'Cholera, unspecified','Cholera NOS'),
+('0020', 'Typhoid fever','Typhoid fever'),
+('0021', 'Car Accident','Car Accident at speed under 40 MPH');
+
+-----------------------------------------------
+-- CareProvider for Patients
+-- Has a Provider Type, belongs to a Hospital
+-----------------------------------------------
+drop table if exists CareProvider;
+
+CREATE TABLE CareProvider (
+CareProviderID int,
+CareProviderTypeID int,
+HospitalID int,
+Title string,
+FirstName string,
+LastName string,
+Phone string,
+Email string
+)
+CLUSTERED BY(CareProviderID) INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+insert into careprovider (careproviderid, careprovidertypeid, hospitalid, title, firstname, lastname, phone, email)
+values
+(1,1,1,'Dr.','Chris','Preachuk','204-222-2222','mhifgta.gxgm@rsagdfgmv.mu-heq.net'),
+(2,2,1,'Nurse','Mandy','Kurbis','204-333-3333','xucbxv.dcanu@zgdt.ussbem.com'),
+(3,3,2,'Dr.','Paul','VanCassaele','952-444-4444','exvj.dinns@ldwplk.net'),
+(4,4,2,'Dr.','Tim','Szopa','952-555-5555','xcfrfue@dvoffp.org');
+
+
+-----------------------------------------
+-- User of Hospital Services
+-- Data is PHI
+-----------------------------------------
+drop table if exists Patient;
+
+CREATE TABLE Patient (
+PatientID int,
+FirstName string,
+LastName string,
+AddressLine1 string,
+AddressLine2 string,
+City string,
+State string,
+ZipPostal string,
+Country string,
+Phone string,
+Email string
+)
+CLUSTERED BY(PatientID) INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+insert into patient (patientid, firstname, lastname, addressline1, addressline2, city, state, zippostal, country, phone, email)
+values
+(1,'Stefanie','Buckley','36 West Fabien St.',NULL,'St. Louis','UT','86036','TUN','404-9904812','ttss42@gmrzga.org'),
+(2,'Sandy','Mc Gee','935 Nobel Way',NULL,'Fort Worth','NH','98849','CHE','6590516203','edhr.ynwidw@gdfifbqe.vjdpsp.org'),
+(3,'Lee','Warren','91 Hague Parkway',NULL,'Denver','WI','18483','GRC','892458-2226','ofxnfq077@bboygn.net'),
+(4,'Regina','Forbes','50 Cowley Avenue',NULL,'Norfolk','TN','07514','EGY','350-7139889','wdia.hjcfxtt@euamcb.org');
+
+--------------------------------------------------------
+-- Full Descriptive information about in-Use Devices
+-- 2 real-World devices listed for our POT
+--------------------------------------------------------
+drop table if exists DeviceType;
+
+CREATE TABLE DeviceType (
+DeviceTypeID int,
+DInfo string,
+ShortDescription string,
+Description string,
+Manufacturer string,
+Model string,
+SpecificationsURL string
+)
+CLUSTERED BY(DeviceTypeID) INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+insert into devicetype (devicetypeid, dinfo, shortdescription, description, manufacturer, model, specificationsurl)
+values
+(1,'Connex VSM','Connex Vital Signs Monitor','Touch screen monitor featuring bright colors with minimal knobs or buttons for ease of cleaning and workflow','Welch-Allyn','6500 Wireless','https://www.welchallyn.com/content/welchallyn/americas/en/products/categories/patient-monitoring/vital-signs-devices/connex-vital-signs-monitor.html'),
+(2,'SureSigns VSi','Intensive care vital signs monitor','Philips SureSigns VSi monitor provides basic vital sign monitoring in a portable and reliable package','Phillips','863275','http://www.medicalexpo.com/prod/philips-healthcare/product-70721-574385.html');
+
+
+-------------------------------------------------------------
+-- Full Descriptive information about a Provider Types
+-- Nurse, ER Nurse, ER Doc, Radiologist, Cardiologist, etc.
+-------------------------------------------------------------
+drop table if exists CareProviderType;
+
+CREATE TABLE CareProviderType (
+CareProviderTypeID int,
+ShortDescription string,
+Description string
+)
+CLUSTERED BY(CareProviderTypeID) INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+insert into careprovidertype (careprovidertypeid, shortdescription, description)
+values
+(1,'RAD','Radiologist'),
+(2,'CARD','Cardiologist'),
+(3,'N','Ward Nurse'),
+(4,'ERD','Emergency Room Doctor');
+
+
+-----------------------------------------
+-- Hospital/Care Facility
+-----------------------------------------
+drop table if exists Hospital;
+
+CREATE TABLE Hospital (
+HospitalID int,
+Name string,
+AddressLine1 string,
+AddressLine2 string,
+City string,
+State string,
+ZipPostal string,
+Country string
+)
+CLUSTERED BY(HospitalID) INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+insert into hospital (hospitalid, name, addressline1, addressline2, city, state, zippostal, country)
+values
+(1,'Health Sciences Center','820 Sherbrook Street',NULL,'Winnipeg','Manitoba','R3A 1R9','Canada'),
+(2,'Mayo Clinic','200 First St. SW',NULL,'Rochester','MN','55905','USA');
+
+
+-----------------------------------------
+-- Specific Location within a Hospital
+-----------------------------------------
+drop table if exists Location;
+
+CREATE TABLE Location (
+LocationID int,
+HospitalID int,
+Building string,
+Floor string,
+Wing string,
+Room string
+)
+CLUSTERED BY(LocationID, HospitalID) INTO 1 BUCKETS STORED AS ORC TBLPROPERTIES ('transactional'='true');
+
+insert into location (locationid, hospitalid, building, floor, wing, room)
+values
+(1,1,'Emergency Services','5','Theater A','A-522'),
+(2,1,'Emergency Services','4','Theater C','C-422'),
+(3,1,'Kleysen Institute','6','Cancer Care','221'),
+(4,1,'Kleysen Institute','6','Cancer Care','200'),
+(5,1,'Kleysen Institute','6','Cancer Care','210'),
+(6,2,'Saint Marys Campus','1','ER','1035-A'),
+(7,2,'Saint Marys Campus','1','ER','1020-A'),
+(8,2,'Gonda Building','Street Level 1','Cancer Care','12B'),
+(9,2,'Gonda Building','Street Level 1','Cancer Care','8B'),
+(10,2,'Gonda Building','Street Level 1','Cancer Care','16B');
+
+
+create table devicenormalized as SELECT d.DeviceGUID,
+d.DeviceId,
+pd.PatientId,
+concat(p.firstname, ' ', p.lastname) as `PatientName`,
+icd.description, concat(cp.title, ' ', cp.firstname, ' ', cp.lastname) as `CareProvider`,
+concat(h.name, ' ', h.addressline1, ' ', l.building, ' ', l.floor, ' ', l.wing, ' ', l.room) as `Location`,
+cp.email as `CareProviderEmail`
+FROM device d INNER JOIN patientdevice pd ON d.DeviceId = pd.deviceid INNER JOIN patient p ON pd.PatientId = p.PatientId INNER JOIN patientdiagnosis dia ON p.PatientId = dia.PatientId INNER JOIN icd10codes icd ON dia.icd10code = icd.icd10code INNER JOIN patientdiagnosis patientd ON p.PatientId = patientd.PatientId INNER JOIN careprovider cp ON patientd.CareProviderId = cp.CareProviderId INNER JOIN location l ON d.LocationId = l.LocationId INNER JOIN hospital h ON l.HospitalId = h.HospitalId;
