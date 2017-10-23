@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 #Get properties 
 
 if [ -f ./.deploy.config ]; then
@@ -24,58 +24,58 @@ git clone https://github.com/ryancicak/northcentral_hackathon.git
 cd northcentral_hackathon
 git checkout tags/$Version
 
-alias cloudbreak="java -jar cloudbreak-shell.jar --cert.validation=false --cloudbreak.address=$CloudBreakServer --identity.address=$CloudBreakIdentityServer --sequenceiq.user=$CloudBreakUser --sequenceiq.password=$CloudBreakPassword"
+cloudbreak="java -jar CloudBreakArtifacts/cloudbreak-cmd/cloudbreak-shell.jar --cert.validation=false --cloudbreak.address=$CloudBreakServer --identity.address=$CloudBreakIdentityServer --sequenceiq.user=$CloudBreakUser --sequenceiq.password=$CloudBreakPassword"
+
 
 #Check if Cluster exists
 echo stack list > file 
-cloudbreak --cmdfile=file | grep $CloudBreakClusterName || {echo "Cluster Already Exists"; exit 1 }
-
+$cloudbreak --cmdfile=file | grep $CloudBreakClusterName || { echo "Cluster Already Exists"; exit 1; }
 #Check if Credentials exists
 echo credential list > file
-cloudbreak --cmdfile=file | grep $CloudBreakCredentials || {echo "Credential does not exist"; exit 1 }
+$cloudbreak --cmdfile=file | grep $CloudBreakCredentials || { echo "Credential does not exist"; exit 1; }
 echo credential select $CloudBreakCredentials > deploy
 #Check if Template is avaliable
 echo template list > file
-cloudbreak --cmdfile=file | grep $CloudBreakTemplate || {echo "Template does not exist"; exit 1 }
+$cloudbreak --cmdfile=file | grep $CloudBreakTemplate || { echo "Template does not exist"; exit 1; }
 
 #Check if Security Group exists
 echo securitygroup list > file 
-cloudbreak --cmdfile=file | grep $CloudBreakSecurityGroup || {echo "SecurityGroup does not exist"; exit 1 }
+$cloudbreak --cmdfile=file | grep $CloudBreakSecurityGroup || { echo "SecurityGroup does not exist"; exit 1; }
 
 #Check if network Exists:
 echo network list > file
-cloudbreak --cmdfile=file | grep $CloudBreakNetwork || {echo "Network does not exist"; exit 1 }
+$cloudbreak --cmdfile=file | grep $CloudBreakNetwork || { echo "Network does not exist"; exit 1; }
 echo network select $CloudBreakNetwork >> deploy
 
 
 #Check if blueprint exists
 echo blueprint list > file
-if cloudbreak --cmdfile=file | grep -q alarmfatigue-$Version; then 
+if $cloudbreak --cmdfile=file | grep -q alarmfatigue-$Version; then 
     echo "Blueprint Version is already deployed. Going to use it"
     echo blueprint select --name alarmfatigue-$Version >> deploy
 else
     echo "Deploying Blueprint"
     echo blueprint create --name alarmfatigue-$Version --description "alarmfatigue-$Version" --file CloudBreakArtifacts/blueprints/alarmfatigue.json > file
-    cloudbreak --cmdfile=file 
+    $cloudbreak --cmdfile=file 
     echo blueprint select --name alarmfatigue-$Version >> deploy
 fi 
 
 #Check if Recipes are there
 echo recipe list > file
-if cloudbreak --cmdfile=file | grep -q alaramfatigue-post-$Version; then
+if $cloudbreak --cmdfile=file | grep -q alaramfatigue-post-$Version; then
     echo "Post Install Recipe is Loaded. Going to add it"
 else
     echo "Deploying Post Install Recipe"
     echo recipe create --name alaramfatigue-post-$Version --type POST --scriptFile CloudBreakArtifacts/recipes/alarmfatigue-demo-post-install.sh > file
-    cloudbreak --cmdfile=file
+    $cloudbreak --cmdfile=file
 fi
 
-if cloudbreak --cmdfile=file | grep -q alaramfatigue-sam-$Version; then
+if $cloudbreak --cmdfile=file | grep -q alaramfatigue-sam-$Version; then
     echo "SAM Install Recipe is Loaded. Going to add it"
 else
     echo "Deploying SAM Install Recipe"
     echo recipe create --name alaramfatigue-sam-$Version --type POST --scriptFile CloudBreakArtifacts/recipes/alarmfatigue-demo-sam-install.sh > file
-    cloudbreak --cmdfile=file
+    $cloudbreak --cmdfile=file
 fi
 
 
@@ -91,6 +91,6 @@ echo cluster create --description "Alarm Fatigue $Version" >> deploy
 
 # Create cluster
 
-cloudbreak --cmdfile=deploy
+$cloudbreak --cmdfile=deploy
 
 
