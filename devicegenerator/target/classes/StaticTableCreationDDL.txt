@@ -1,0 +1,62 @@
+create database if not exists AlarmFatigue;
+
+use AlarmFatigue;
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+-- EXTERNAL TABLES
+--
+Reference (Type) Tables
+-- Only normalized out these descriptive types in instances where
+        our Alerting or stream Flow may depend on the type
+-- Examples - Different Alerts for different DeviceTypes
+--            Different CareProvider contacted for different Alerts
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+
+
+
+
+-- For sample data - see the full-sized Patient file
+
+
+
+
+----------------------------------------------------------------------------------
+-- Monitoring Device
+-- Has a Type, and Exists in a Location
+-- DeviceGUID key is a string - most devices transmit internal GUID with messages
+-- Data is PHI
+----------------------------------------------------------------------------------
+
+
+
+
+-------------------------------------------------------------
+-- Vital Signs
+-------------------------------------------------------------
+drop table if exists VitalSigns;
+
+CREATE EXTERNAL TABLE VitalSigns (
+VitalSignID int,
+ShortDescription string,
+Description string,
+AcceptableLowValue decimal(5,2),
+AcceptableHighValue decimal(5,2)
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|'
+LOCATION '/user/hive/alarmfatigue/vitalsigns'
+TBLPROPERTIES ("skip.header.line.count"="1")
+;
+
+--VitalSignID|ShortDescription|Description|AcceptableLowValue|AcceptableHighValue
+--1|Respiration|The number of breaths a person takes per minute|12|16
+--2|PulseRate|measurement of the number of times the heart beats per minute|60|100
+--3|BloodPressureSystolic|The highest pressure when the heart beats and pushes the blood round your body (mm Hg - millimeters of mercury)|90|140
+--4|BloodPressureDiastolic|The lowest pressure when the heart relaxes between beats (mm Hg - millimeters of mercury)|60|90
+--5|BodyTemperature|Thermometer constant measure of the temperature of the skin (degrees f)|97.8|99.6
+
+
+

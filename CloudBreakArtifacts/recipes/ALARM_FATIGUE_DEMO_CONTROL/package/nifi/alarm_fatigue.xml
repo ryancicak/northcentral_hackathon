@@ -1080,9 +1080,9 @@
                 </value>
               </entry>
               <entry>
-                <key>Location</key>
+                <key>PatLocation</key>
                 <value>
-                  <name>Location</name>
+                  <name>PatLocation</name>
                 </value>
               </entry>
               <entry>
@@ -1169,7 +1169,7 @@
                 <value>${devicenormalized.6}</value>
               </entry>
               <entry>
-                <key>Location</key>
+                <key>PatLocation</key>
                 <value>${devicenormalized.7}</value>
               </entry>
               <entry>
@@ -2102,9 +2102,9 @@
               </value>
             </entry>
             <entry>
-              <key>Location</key>
+              <key>PatLocation</key>
               <value>
-                <name>Location</name>
+                <name>PatLocation</name>
               </value>
             </entry>
             <entry>
@@ -2205,8 +2205,8 @@
               <value>$.HealthProviderName</value>
             </entry>
             <entry>
-              <key>Location</key>
-              <value>$.Location</value>
+              <key>PatLocation</key>
+              <value>$.PatLocation</value>
             </entry>
             <entry>
               <key>PatientId</key>
@@ -2473,7 +2473,7 @@ Input Port to which Mahesh's processor will connect to</label>
             <properties>
               <entry>
                 <key>Attributes List</key>
-                <value>DeviceGUID, DeviceId, PatientId, PatientName, DiagnosisDescription, HealthProviderName, Location, DoctorEmail, SampleDuration, Respiration, PulseRate, BloodPressureSystolic, BloodPressureDiastolic, BodyTemperature, TransmissionTimestamp</value>
+                <value>DeviceGUID, DeviceId, PatientId, PatientName, DiagnosisDescription, HealthProviderName, PatLocation, DoctorEmail, SampleDuration, Respiration, PulseRate, BloodPressureSystolic, BloodPressureDiastolic, BodyTemperature, TransmissionTimestamp</value>
               </entry>
               <entry>
                 <key>Destination</key>
