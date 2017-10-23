@@ -24,7 +24,7 @@ git clone https://github.com/ryancicak/northcentral_hackathon.git
 cd northcentral_hackathon
 git checkout tags/$Version
 
-alias cloudbreak = "java -jar cloudbreak-shell.jar --cert.validation=false --cloudbreak.address=$CloudBreakServer --identity.address=$CloudBreakIdentityServer --sequenceiq.user=$CloudBreakUser --sequenceiq.password=$CloudBreakPassword"
+alias cloudbreak="java -jar cloudbreak-shell.jar --cert.validation=false --cloudbreak.address=$CloudBreakServer --identity.address=$CloudBreakIdentityServer --sequenceiq.user=$CloudBreakUser --sequenceiq.password=$CloudBreakPassword"
 
 #Check if Cluster exists
 echo stack list > file 
