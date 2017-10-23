@@ -277,6 +277,6 @@ d.DeviceId,
 pd.PatientId,
 concat(p.firstname, ' ', p.lastname) as `PatientName`,
 icd.description, concat(cp.title, ' ', cp.firstname, ' ', cp.lastname) as `CareProvider`,
-concat(h.name, ' ', h.addressline1, ' ', l.building, ' ', l.floor, ' ', l.wing, ' ', l.room) as `Location`,
+concat(h.name, ' ', h.addressline1, ' ', l.building, ' ', l.floor, ' ', l.wing, ' ', l.room) as `PatLocation`,
 cp.email as `CareProviderEmail`
 FROM device d INNER JOIN patientdevice pd ON d.DeviceId = pd.deviceid INNER JOIN patient p ON pd.PatientId = p.PatientId INNER JOIN patientdiagnosis dia ON p.PatientId = dia.PatientId INNER JOIN icd10codes icd ON dia.icd10code = icd.icd10code INNER JOIN patientdiagnosis patientd ON p.PatientId = patientd.PatientId INNER JOIN careprovider cp ON patientd.CareProviderId = cp.CareProviderId INNER JOIN location l ON d.LocationId = l.LocationId INNER JOIN hospital h ON l.HospitalId = h.HospitalId;
