@@ -688,5 +688,6 @@ echo "********************************* Initializing SAM Namespace"
 initializeSAMNamespace
 echo "********************************* Import SAM Template"
 TOPOLOGY_ID=$(importSAMTopology $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/sam/AlarmFatigueRefApp.json AlarmFatigueRefApp)
+TOPOLOGY_COMPLEX_ID=$(importSAMTopology $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/recipes/ALARM_FATIGUE_DEMO_CONTROL/package/sam/AlarmFatigue-ComplexRules.json AlarmFatigueRefAppComplex)
 echo "********************************* Deploy SAM Topology"
 deploySAMTopology "$TOPOLOGY_ID"	
