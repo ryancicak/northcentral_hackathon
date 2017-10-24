@@ -768,28 +768,60 @@ else
        	echo "*********************************NIFI Service Started..."
 fi
 
+
+#Create Service
+
+curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL
+sleep 2
+
+#Add role to service
+curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL/components/ALARM_FATIGUE_DEMO_CONTROL
+sleep 2
+
+# Create Configs
+tee control-config <<-'EOF'
+  "properties" : {
+"democontrol.download_url" : "https://github.com/ryancicak/northcentral_hackathon/raw/master/Data-Loader.zip",
+"democontrol.install_dir" : "/root"
+  }
+EOF
+
+/var/lib/ambari-server/resources/scripts/configs.sh set $AMBARI_HOST $CLUSTER_NAME control-config control-config
+sleep 2
+
+curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/hosts/$AMBARI_HOST/host_components/ALARM_FATIGUE_DEMO_CONTROL
+sleep 15
+
+
+
+
+#Install Alarm Fatigue Service
+TASKID=$(curl -u admin:admin -H "X-Requested-By:ambari" -i -X PUT -d '{"RequestInfo": {"context" :"Install Alarm Fatigue Controller"}, "Body": {"ServiceInfo": {"maintenance_state" : "OFF", "state": "INSTALLED"}}}' http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL| grep "id" | grep -Po '([0-9]+)')
+
+sleep 2       	
+if [ -z $TASKID ]; then
+  until ! [ -z $TASKID ]; do
+    TASKID=$(curl -u admin:admin -H "X-Requested-By:ambari" -i -X PUT -d '{"RequestInfo": {"context" :"Install Alaram Fatigue Controller"}, "Body": {"ServiceInfo": {"maintenance_state" : "OFF", "state": "INSTALLED"}}}' http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL | grep "id" | grep -Po '([0-9]+)')
+    echo "*********************************AMBARI TaskID " $TASKID
+  done
+fi
+
+echo "*********************************AMBARI TaskID " $TASKID
+sleep 2
+LOOPESCAPE="false"
+until [ "$LOOPESCAPE" == true ]; do
+        TASKSTATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
+        if [ "$TASKSTATUS" == COMPLETED ]; then
+                LOOPESCAPE="true"
+        fi
+        echo "*********************************Task Status" $TASKSTATUS
+        sleep 2
+done
+
+
 echo "********************************* Adding Symbolic Links to Atlas Client..."
 #Add symbolic links to Atlas Hooks
 ln -s /usr/hdp/current/atlas-client/hook/storm/atlas-plugin-classloader-0.8.0.2.6.1.0-34.jar /usr/hdf/current/storm-client/lib/atlas-plugin-classloader.jar
 
 ln -s /usr/hdp/current/atlas-client/hook/storm/storm-bridge-shim-0.8.0.2.6.1.0-34.jar /usr/hdf/current/storm-client/lib/storm-bridge-shim.jar
 
-#export MYSQL_TEMP_PASSWORD=$(grep 'A temporary password' /var/log/mysqld.log |grep -Po ': .+'|grep -Po '[^: ].+')
-#mysqladmin -u root --password=$MYSQL_TEMP_PASSWORD password "Password!1"
-#export MYSQL_PASSWORD=Password!1
-
-#mysql -u root --password=$MYSQL_PASSWORD --execute="uninstall plugin validate_password"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="CREATE DATABASE registry"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="CREATE DATABASE streamline"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="CREATE DATABASE druid DEFAULT CHARACTER SET utf8"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="CREATE DATABASE superset DEFAULT CHARACTER SET utf8"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="CREATE USER 'registry'@'%' IDENTIFIED BY 'registry'"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="CREATE USER 'streamline'@'%' IDENTIFIED BY 'streamline'"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="CREATE USER 'druid'@'%' IDENTIFIED BY 'druid'"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="CREATE USER 'superset'@'%' IDENTIFIED BY 'superset'"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="GRANT ALL PRIVILEGES ON registry.* TO 'registry'@'%' WITH GRANT OPTION"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="GRANT ALL PRIVILEGES ON streamline.* TO 'streamline'@'%' WITH GRANT OPTION"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="GRANT ALL PRIVILEGES ON druid.* TO 'druid'@'%' WITH GRANT OPTION"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="GRANT ALL PRIVILEGES ON superset.* TO 'superset'@'%' WITH GRANT OPTION"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="FLUSH PRIVILEGES"
-#mysql -u root --password=$MYSQL_PASSWORD --execute="COMMIT"
