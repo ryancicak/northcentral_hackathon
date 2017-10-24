@@ -804,7 +804,22 @@ until [ "$LOOPESCAPE" == true ]; do
 
 sleep 2
 
-startServiceAndComplete ALARM_FATIGUE_DEMO_CONTROL
+sleep 2
+ALARM_FATIGUE_STATUS=$(getServiceStatus ALARM_FATIGUE_DEMO_CONTROL)
+echo "*********************************Checking ALARM_FATIGUE_STATUS status..."
+if ! [[ $ALARM_FATIGUE_STATUS == STARTED || $ALARM_FATIGUE_STATUS == INSTALLED ]]; then
+       	echo "*********************************ALARM_FATIGUE_STATUS is in a transitional state, waiting..."
+       	waitForService ALARM_FATIGUE_DEMO_CONTROL
+       	echo "*********************************NIFI has entered a ready state..."
+fi
+
+sleep 2
+
+if [[ $ALARM_FATIGUE_STATUS == INSTALLED ]]; then
+       	startServiceAndComplete ALARM_FATIGUE_DEMO_CONTROL
+else
+       	echo "*********************************NIFI Service Started..."
+fi
 
 
 echo "********************************* Adding Symbolic Links to Atlas Client..."
