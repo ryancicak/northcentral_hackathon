@@ -1,0 +1,4 @@
+"properties" : {
+"democontrol.download.url" : "https://github.com/ryancicak/northcentral_hackathon/raw/master/Data-Loader.zip",
+"democontrol.install.dir" : "/root"
+}
