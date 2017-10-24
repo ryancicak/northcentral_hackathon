@@ -769,28 +769,7 @@ else
 fi
 
 
-#Create Service
-
-curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL
 sleep 2
-
-#Add role to service
-curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL/components/ALARM_FATIGUE_DEMO_CONTROL
-sleep 2
-
-# Create Configs
-tee control-config <<-'EOF'
-  "properties" : {
-"democontrol.download_url" : "https://github.com/ryancicak/northcentral_hackathon/raw/master/Data-Loader.zip",
-"democontrol.install_dir" : "/root"
-  }
-EOF
-
-/var/lib/ambari-server/resources/scripts/configs.sh set $AMBARI_HOST $CLUSTER_NAME control-config control-config
-sleep 2
-
-curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/hosts/$AMBARI_HOST/host_components/ALARM_FATIGUE_DEMO_CONTROL
-sleep 15
 
 
 
@@ -825,3 +804,4 @@ ln -s /usr/hdp/current/atlas-client/hook/storm/atlas-plugin-classloader-0.8.0.2.
 
 ln -s /usr/hdp/current/atlas-client/hook/storm/storm-bridge-shim-0.8.0.2.6.1.0-34.jar /usr/hdf/current/storm-client/lib/storm-bridge-shim.jar
 
+echo "Completed installing the Alarm Fatigue Demo"
