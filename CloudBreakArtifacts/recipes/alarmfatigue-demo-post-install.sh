@@ -773,11 +773,23 @@ sleep 2
 
 
 
+/var/lib/ambari-server/resources/scripts/configs.sh set $AMBARI_HOST $CLUSTER_NAME control-config $ROOT_PATH/northcentral_hackathon/CloudBreakArtifacts/hdf-config/alarmfatigue-config/control-config.json
 
+curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL
+sleep 2
+
+#Add role to service
+
+curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL/components/ALARM_FATIGUE_DEMO_CONTROL
+sleep 2
+
+curl -u admin:admin -H "X-Requested-By:ambari" -i -X POST http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/hosts/$AMBARI_HOST/host_components/ALARM_FATIGUE_DEMO_CONTROL
+
+sleep 2
 #Install Alarm Fatigue Service
 TASKID=$(curl -u admin:admin -H "X-Requested-By:ambari" -i -X PUT -d '{"RequestInfo": {"context" :"Install Alarm Fatigue Controller"}, "Body": {"ServiceInfo": {"maintenance_state" : "OFF", "state": "INSTALLED"}}}' http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL| grep "id" | grep -Po '([0-9]+)')
 
-sleep 2       	
+sleep 2
 if [ -z $TASKID ]; then
   until ! [ -z $TASKID ]; do
     TASKID=$(curl -u admin:admin -H "X-Requested-By:ambari" -i -X PUT -d '{"RequestInfo": {"context" :"Install Alaram Fatigue Controller"}, "Body": {"ServiceInfo": {"maintenance_state" : "OFF", "state": "INSTALLED"}}}' http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/services/ALARM_FATIGUE_DEMO_CONTROL | grep "id" | grep -Po '([0-9]+)')
@@ -789,13 +801,10 @@ echo "*********************************AMBARI TaskID " $TASKID
 sleep 2
 LOOPESCAPE="false"
 until [ "$LOOPESCAPE" == true ]; do
-        TASKSTATUS=$(curl -u admin:admin -X GET http://$AMBARI_HOST:8080/api/v1/clusters/$CLUSTER_NAME/requests/$TASKID | grep "request_status" | grep -Po '([A-Z]+)')
-        if [ "$TASKSTATUS" == COMPLETED ]; then
-                LOOPESCAPE="true"
-        fi
-        echo "*********************************Task Status" $TASKSTATUS
-        sleep 2
-done
+
+sleep 2
+
+startServiceAndComplete ALARM_FATIGUE_DEMO_CONTROL
 
 
 echo "********************************* Adding Symbolic Links to Atlas Client..."
