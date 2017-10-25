@@ -2,6 +2,8 @@
 # change user to root
 sudo su
 
+# Log in to MySQL and connect to superset database.
+
 # exporting data from superset tables from source env
 SELECT * FROM datasources INTO OUTFILE '/var/lib/mysql-files/0_1_datasources.dat';
 SELECT * FROM metrics INTO OUTFILE '/var/lib/mysql-files/0_2_metrics.dat';
