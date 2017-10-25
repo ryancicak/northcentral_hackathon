@@ -97,6 +97,9 @@
         },
         {
           "name": "PHOENIX_QUERY_SERVER"
+        },
+        {
+          "name": "HIVE_METASTORE"
         }
       ]
     },
@@ -124,9 +127,6 @@
         },
         {
           "name": "INFRA_SOLR_CLIENT"
-        },
-        {
-          "name": "HIVE_METASTORE"
         },
         {
           "name": "TEZ_CLIENT"
