@@ -797,12 +797,6 @@ if [ -z $TASKID ]; then
   done
 fi
 
-echo "*********************************AMBARI TaskID " $TASKID
-sleep 2
-LOOPESCAPE="false"
-until [ "$LOOPESCAPE" == true ]; do
-
-sleep 2
 
 sleep 2
 ALARM_FATIGUE_STATUS=$(getServiceStatus ALARM_FATIGUE_DEMO_CONTROL)
