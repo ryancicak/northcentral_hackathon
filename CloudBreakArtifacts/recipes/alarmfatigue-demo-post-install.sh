@@ -806,11 +806,8 @@ fi
 
 sleep 20
 
-if [[ $ALARM_FATIGUE_STATUS == INSTALLED ]]; then
-       	startServiceAndComplete ALARM_FATIGUE_DEMO_CONTROL
-else
-       	echo "*********************************ALARM_FATIGUE_STATUS Service Started..."
-fi
+startServiceAndComplete ALARM_FATIGUE_DEMO_CONTROL
+echo "*********************************ALARM_FATIGUE_STATUS Service Started..."
 
 echo "********************************* Adding Symbolic Links to Atlas Client..."
 #Add symbolic links to Atlas Hooks
