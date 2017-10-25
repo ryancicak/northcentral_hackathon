@@ -804,7 +804,7 @@ if ! [[ $ALARM_FATIGUE_STATUS == STARTED || $ALARM_FATIGUE_STATUS == INSTALLED ]
        	echo "*********************************ALARM_FATIGUE_STATUS has entered a ready state..."
 fi
 
-sleep 2
+sleep 20
 
 if [[ $ALARM_FATIGUE_STATUS == INSTALLED ]]; then
        	startServiceAndComplete ALARM_FATIGUE_DEMO_CONTROL
