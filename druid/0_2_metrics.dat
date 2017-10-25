@@ -1,0 +1,15 @@
+1	count	COUNT(*)	count	alarm-fatigue-all-events-cube	{"type": "count", "name": "count"}	\N	1	2017-10-25 13:23:00	1	2017-10-25 13:23:00	0	\N
+2	count	COUNT(*)	count	device-event-alerts-cube	{"type": "count", "name": "count"}	\N	1	2017-10-25 13:23:01	1	2017-10-25 13:23:01	0	\N
+3	max__PulseRate_AVG	MAX(PulseRate_AVG)	max	alarm-fatigue-all-events-cube	{"fieldName": "PulseRate_AVG", "name": "max__PulseRate_AVG", "type": "doubleMax"}		1	2017-10-23 17:13:02	1	2017-10-20 21:31:13	0	
+4	count	COUNT(*)	count	device-events-cube2	{"name": "count", "type": "count"}	\N	1	2017-10-20 21:53:36	1	2017-10-20 21:53:36	0	\N
+5	count	COUNT(*)	count	device-event-alerts-cube	{"name": "count", "type": "count"}	\N	1	2017-10-23 17:02:22	1	2017-10-23 17:02:22	0	\N
+6	max__BodyTemperature_AVG	MAX(BodyTemperature_AVG)	max	alarm-fatigue-all-events-cube	{"fieldName": "BodyTemperature_AVG", "name": "max__BodyTemperature_AVG", "type": "doubleMax"}		1	2017-10-23 17:16:51	1	2017-10-23 17:14:53	0	
+7	max__BloodPressureSystolic_AVG	MAX(BloodPressureSystolic_AVG)	max	alarm-fatigue-all-events-cube	{"fieldName": "BloodPressureSystolic_AVG", "name": "max__BloodPressureSystolic_AVG", "type": "doubleMax"}		1	2017-10-23 17:31:41	1	2017-10-23 17:26:52	0	
+8	max__BloodPressureDiastolic_AVG	MAX(BloodPressureDiastolic_AVG)	max	alarm-fatigue-all-events-cube	{"fieldName": "BloodPressureDiastolic_AVG", "name": "max__BloodPressureDiastolic_AVG", "type": "doubleMax"}		1	2017-10-23 17:32:00	1	2017-10-23 17:28:26	0	
+9	max__Respiration_AVG	MAX(Respiration_AVG)	max	alarm-fatigue-all-events-cube	{"fieldName": "Respiration_AVG", "name": "max__Respiration_AVG", "type": "doubleMax"}		1	2017-10-23 17:30:11	1	2017-10-23 17:30:11	0	
+15	min__BloodPressureSystolic_AVG	MIN(BloodPressureSystolic_AVG)	min	alarm-fatigue-all-events-cube	{"fieldName": "BloodPressureSystolic_AVG", "name": "min__BloodPressureSystolic_AVG", "type": "doubleMin"}	\N	1	2017-10-24 02:16:03	1	2017-10-24 02:16:03	0	\N
+16	min__BloodPressureDiastolic_AVG	MIN(BloodPressureDiastolic_AVG)	min	alarm-fatigue-all-events-cube	{"fieldName": "BloodPressureDiastolic_AVG", "name": "min__BloodPressureDiastolic_AVG", "type": "doubleMin"}	\N	1	2017-10-24 02:16:03	1	2017-10-24 02:16:03	0	\N
+17	min__PulseRate_AVG	MIN(PulseRate_AVG)	min	alarm-fatigue-all-events-cube	{"fieldName": "PulseRate_AVG", "name": "min__PulseRate_AVG", "type": "doubleMin"}	\N	1	2017-10-24 02:16:03	1	2017-10-24 02:16:03	0	\N
+18	min____time	MIN(__time)	min	alarm-fatigue-all-events-cube	{"fieldName": "__time", "name": "min____time", "type": "longMin"}	\N	1	2017-10-24 02:16:03	1	2017-10-24 02:16:03	0	\N
+19	max____time	MAX(__time)	max	alarm-fatigue-all-events-cube	{"fieldName": "__time", "name": "max____time", "type": "longMax"}	\N	1	2017-10-24 02:16:03	1	2017-10-24 02:16:03	0	\N
+20	min__BodyTemperature_AVG	MIN(BodyTemperature_AVG)	min	alarm-fatigue-all-events-cube	{"fieldName": "BodyTemperature_AVG", "name": "min__BodyTemperature_AVG", "type": "doubleMin"}	\N	1	2017-10-24 02:16:03	1	2017-10-24 02:16:03	0	\N

@@ -1,0 +1,213 @@
+2017-10-20 22:13:21	2017-10-25 13:48:15	1	Patient Pulse Rate by Time	druid	alarm-fatigue-all-events-cube	line	{\
+    "add_to_dash": "false",\
+    "collapsed_fieldsets": "",\
+    "contribution": "false",\
+    "datasource_id": "2",\
+    "datasource_name": "alarm-fatigue-all-events-cube",\
+    "datasource_type": "druid",\
+    "druid_time_origin": "",\
+    "flt_col_0": "",\
+    "flt_eq_0": "",\
+    "flt_op_0": "in",\
+    "goto_dash": "false",\
+    "granularity": "1 minute",\
+    "groupby": [\
+        "PatientName"\
+    ],\
+    "having_col_0": "",\
+    "having_eq_0": "",\
+    "having_op_0": "==",\
+    "limit": "100",\
+    "line_interpolation": "linear",\
+    "metrics": [\
+        "max__PulseRate_AVG"\
+    ],\
+    "new_dashboard_name": "",\
+    "new_slice_name": "",\
+    "num_period_compare": "",\
+    "period_ratio_type": "growth",\
+    "rdo_save": "overwrite",\
+    "resample_fillmethod": "",\
+    "resample_how": "",\
+    "resample_rule": "",\
+    "rich_tooltip": "y",\
+    "rolling_periods": "",\
+    "rolling_type": "None",\
+    "save_to_dashboard_id": "",\
+    "show_brush": "false",\
+    "show_legend": "y",\
+    "show_markers": "false",\
+    "since": "12 hours ago",\
+    "slice_id": "1",\
+    "slice_name": "Patient Pulse Rate by Time",\
+    "time_compare": "",\
+    "timeseries_limit_metric": "",\
+    "until": "now",\
+    "userid": "1",\
+    "viz_type": "line",\
+    "x_axis_format": "smart_date",\
+    "x_axis_label": "",\
+    "x_axis_showminmax": "y",\
+    "y_axis_format": ".3s",\
+    "y_axis_label": "",\
+    "y_axis_zero": "false",\
+    "y_log_scale": "false"\
+}	1	1		\N	[druid-ambari].[alarm-fatigue-all-events-cube](id:2)	2
+2017-10-23 17:05:28	2017-10-23 17:05:28	2	Total # of Alerts Sent	druid	device-event-alerts-cube	big_number_total	{\
+    "add_to_dash": "false",\
+    "collapsed_fieldsets": "",\
+    "datasource_id": "5",\
+    "datasource_name": "device-event-alerts-cube",\
+    "datasource_type": "druid",\
+    "druid_time_origin": "",\
+    "flt_col_0": "",\
+    "flt_eq_0": "",\
+    "flt_op_0": "in",\
+    "goto_dash": "false",\
+    "granularity": "one day",\
+    "having_col_0": "",\
+    "having_eq_0": "",\
+    "having_op_0": "==",\
+    "metric": "count",\
+    "new_dashboard_name": "",\
+    "new_slice_name": "Total # of Alerts Sent",\
+    "rdo_save": "saveas",\
+    "save_to_dashboard_id": "",\
+    "since": "7 days ago",\
+    "slice_name": "Total # of Alerts Sent",\
+    "subheader": "",\
+    "until": "now",\
+    "userid": "1",\
+    "viz_type": "big_number_total",\
+    "y_axis_format": ".3s"\
+}	1	1	\N	\N	[druid-ambari].[device-event-alerts-cube](id:5)	5
+2017-10-23 17:06:47	2017-10-23 17:06:47	3	Total # of Events	druid	alarm-fatigue-all-events-cube	big_number_total	{\
+    "add_to_dash": "false",\
+    "collapsed_fieldsets": "",\
+    "datasource_id": "2",\
+    "datasource_name": "alarm-fatigue-all-events-cube",\
+    "datasource_type": "druid",\
+    "druid_time_origin": "",\
+    "flt_col_0": "",\
+    "flt_eq_0": "",\
+    "flt_op_0": "in",\
+    "goto_dash": "false",\
+    "granularity": "one day",\
+    "having_col_0": "",\
+    "having_eq_0": "",\
+    "having_op_0": "==",\
+    "metric": "count",\
+    "new_dashboard_name": "",\
+    "new_slice_name": "Total # of Events",\
+    "rdo_save": "saveas",\
+    "save_to_dashboard_id": "",\
+    "since": "7 days ago",\
+    "slice_name": "Total # of Events",\
+    "subheader": "",\
+    "until": "now",\
+    "userid": "1",\
+    "viz_type": "big_number_total",\
+    "y_axis_format": ".3s"\
+}	1	1	\N	\N	[druid-ambari].[alarm-fatigue-all-events-cube](id:2)	2
+2017-10-23 17:18:15	2017-10-25 13:47:01	4	Body Temperature by Patient	druid	alarm-fatigue-all-events-cube	line	{\
+    "add_to_dash": "false",\
+    "collapsed_fieldsets": "",\
+    "contribution": "false",\
+    "datasource_id": "2",\
+    "datasource_name": "alarm-fatigue-all-events-cube",\
+    "datasource_type": "druid",\
+    "druid_time_origin": "",\
+    "flt_col_0": "",\
+    "flt_eq_0": "",\
+    "flt_op_0": "in",\
+    "goto_dash": "false",\
+    "granularity": "1 minute",\
+    "groupby": [\
+        "PatientName"\
+    ],\
+    "having_col_0": "",\
+    "having_eq_0": "",\
+    "having_op_0": "==",\
+    "limit": "50",\
+    "line_interpolation": "linear",\
+    "metrics": [\
+        "max__BodyTemperature_AVG"\
+    ],\
+    "new_dashboard_name": "",\
+    "new_slice_name": "Body Temperature by Patient",\
+    "num_period_compare": "",\
+    "period_ratio_type": "growth",\
+    "rdo_save": "saveas",\
+    "resample_fillmethod": "",\
+    "resample_how": "",\
+    "resample_rule": "",\
+    "rich_tooltip": "y",\
+    "rolling_periods": "",\
+    "rolling_type": "None",\
+    "save_to_dashboard_id": "",\
+    "show_brush": "false",\
+    "show_legend": "y",\
+    "show_markers": "false",\
+    "since": "12 hours ago",\
+    "slice_name": "Body Temperature by Patient",\
+    "time_compare": "",\
+    "timeseries_limit_metric": "",\
+    "until": "now",\
+    "userid": "1",\
+    "viz_type": "line",\
+    "x_axis_format": "smart_date",\
+    "x_axis_label": "",\
+    "x_axis_showminmax": "y",\
+    "y_axis_format": ".3s",\
+    "y_axis_label": "",\
+    "y_axis_zero": "false",\
+    "y_log_scale": "false"\
+}	1	1		\N	[druid-ambari].[alarm-fatigue-all-events-cube](id:2)	2
+2017-10-23 17:24:38	2017-10-25 13:47:41	5	Patient Vital Comparison	druid	alarm-fatigue-all-events-cube	dist_bar	{\
+    "add_to_dash": "existing",\
+    "bar_stacked": "false",\
+    "bottom_margin": "auto",\
+    "collapsed_fieldsets": "",\
+    "contribution": "false",\
+    "datasource_id": "2",\
+    "datasource_name": "alarm-fatigue-all-events-cube",\
+    "datasource_type": "druid",\
+    "druid_time_origin": "",\
+    "flt_col_0": "",\
+    "flt_eq_0": "",\
+    "flt_op_0": "in",\
+    "goto_dash": "false",\
+    "granularity": "1 minute",\
+    "groupby": [\
+        "PatientName"\
+    ],\
+    "having_col_0": "",\
+    "having_eq_0": "",\
+    "having_op_0": "==",\
+    "metrics": [\
+        "max__BodyTemperature_AVG",\
+        "max__PulseRate_AVG",\
+        "max__BloodPressureDiastolic_AVG",\
+        "max__BloodPressureSystolic_AVG",\
+        "max__Respiration_AVG"\
+    ],\
+    "new_dashboard_name": "",\
+    "new_slice_name": "",\
+    "order_bars": "false",\
+    "rdo_save": "overwrite",\
+    "reduce_x_ticks": "false",\
+    "row_limit": "5000",\
+    "save_to_dashboard_id": "1",\
+    "show_bar_value": "y",\
+    "show_controls": "false",\
+    "show_legend": "y",\
+    "since": "12 hours ago",\
+    "slice_id": "5",\
+    "slice_name": "Patient Vital Comparison",\
+    "until": "now",\
+    "userid": "1",\
+    "viz_type": "dist_bar",\
+    "x_axis_label": "",\
+    "y_axis_format": ".3s",\
+    "y_axis_label": ""\
+}	1	1		\N	[druid-ambari].[alarm-fatigue-all-events-cube](id:2)	2
