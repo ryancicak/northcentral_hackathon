@@ -1,0 +1,22 @@
+# Migrating superset dashboard tables
+# change user to root
+sudo su
+
+# Log in to MySQL and connect to superset database.
+
+# exporting data from superset tables from source env
+SELECT * FROM datasources INTO OUTFILE '/var/lib/mysql-files/0_1_datasources.dat';
+SELECT * FROM metrics INTO OUTFILE '/var/lib/mysql-files/0_2_metrics.dat';
+SELECT * FROM slices INTO OUTFILE '/var/lib/mysql-files/1_slices.dat';
+SELECT * FROM slice_user INTO OUTFILE '/var/lib/mysql-files/2_slice_user.dat';
+SELECT * FROM dashboards INTO OUTFILE '/var/lib/mysql-files/3_dashboards.dat';
+SELECT * FROM dashboard_slices INTO OUTFILE '/var/lib/mysql-files/4_dashboard_slices.dat';
+
+# Importing data from superset tables into target env
+LOAD DATA INFILE '/var/lib/mysql-files/0_1_datasources.dat' INTO TABLE datasources
+LOAD DATA INFILE '/var/lib/mysql-files/0_2_metrics.dat' INTO TABLE metrics
+LOAD DATA INFILE '/var/lib/mysql-files/1_slices.dat' INTO TABLE slices
+LOAD DATA INFILE '/var/lib/mysql-files/2_slice_user.dat' INTO TABLE slice_user
+LOAD DATA INFILE '/var/lib/mysql-files/3_dashboards.dat' INTO TABLE dashboards
+LOAD DATA INFILE '/var/lib/mysql-files/4_dashboard_slices.dat' INTO TABLE dashboard_slices
+
