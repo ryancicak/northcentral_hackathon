@@ -1,0 +1,109 @@
+{
+ "type": "record",
+ "namespace": "hortonworks.hdp.refapp.alarmfatigue",
+ "name": "afeventavro",
+ "fields": [
+  {
+   "name": "DeviceGUID",
+   "type": "string"
+  },
+  {
+   "name": "DeviceId",
+   "type": [
+    "null",
+    "string"
+   ]
+  },
+  {
+   "name": "PatientId",
+   "type": [
+    "null",
+    "int"
+   ]
+  },
+  {
+   "name": "PatientName",
+   "type": [
+    "null",
+    "string"
+   ]
+  },
+  {
+   "name": "DiagnosisDescription",
+   "type": [
+    "null",
+    "string"
+   ]
+  },
+  {
+   "name": "HealthProviderName",
+   "type": [
+    "null",
+    "string"
+   ]
+  },
+  {
+   "name": "PatLocation",
+   "type": [
+    "null",
+    "string"
+   ]
+  },
+  {
+   "name": "DoctorEmail",
+   "type": [
+    "null",
+    "string"
+   ]
+  },
+  {
+   "name": "SampleDuration",
+   "type": [
+    "null",
+    "int"
+   ]
+  },
+  {
+   "name": "Respiration",
+   "type": [
+    "null",
+    "int"
+   ]
+  },
+  {
+   "name": "PulseRate",
+   "type": [
+    "null",
+    "int"
+   ]
+  },
+  {
+   "name": "BloodPressureSystolic",
+   "type": [
+    "null",
+    "int"
+   ]
+  },
+  {
+   "name": "BloodPressureDiastolic",
+   "type": [
+    "null",
+    "int"
+   ]
+  },
+  {
+   "name": "BodyTemperature",
+   "type": [
+    "null",
+    "float"
+   ]
+  },
+  {
+   "name": "TransmissionTimestamp",
+   "type": [
+    "null",
+    "string"
+   ]
+  }
+ ]
+}
