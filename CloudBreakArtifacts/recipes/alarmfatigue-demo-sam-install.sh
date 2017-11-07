@@ -477,7 +477,7 @@ handleGroupProcessors (){
        			if ! [ -z $(echo $TYPE|grep "PutHiveStreaming") ]; then
        				echo "***************************This is a PutHiveStreaming Processor"
 
-       				PAYLOAD=$(echo "{\"id\":\"$ID\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$ID\",\"config\":{\"properties\":{\"hive-stream-metastore-uri\":\"$HIVE_METASTORE_URI\"}},\"state\":\"RUNNING\"}}"
+       				PAYLOAD=$(echo "{\"id\":\"$ID\",\"revision\":{\"version\":$REVISION},\"component\":{\"id\":\"$ID\",\"config\":{\"properties\":{\"hive-stream-metastore-uri\":\"$HIVE_METASTORE_URI\"}},\"state\":\"RUNNING\"}}")
 
        			fi
        			if ! [ -z $(echo $TYPE|grep "PutKafka") ] || ! [ -z $(echo $TYPE|grep "PublishKafka") ]; then
